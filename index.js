@@ -13,15 +13,15 @@ function onMessage (e) {
     const { data } = e;
     const msgs = JSON.parse(data);
 
-    if (Notification.permission === 'granted') {
+    if (document.hidden && Notification.permission === 'granted') {
         new Notification('New Message');
     }
 
     const fragment = document.createDocumentFragment();
 
-    msgs.forEach(m => {
+    msgs.forEach(({ from, message }) => {
         const msgElement = document.createElement('div');
-        msgElement.innerHTML = m.message;
+        msgElement.innerHTML = `${from}: ${message}`;
         fragment.appendChild(msgElement);
     });
 
@@ -61,11 +61,12 @@ function onOpen () {
 async function onClose () {
     ws.removeEventListener('open', onOpen);
     ws.removeEventListener('close', onClose);
-    ws.removeEventListener('messages', onMessage);
+    ws.removeEventListener('message', onMessage);
 
     await wait(2000);
 
     ws = new WebSocket('ws://chat.shas.tel');
+    ws.addEventListener('close', onClose);
     ws.addEventListener('open', onOpen);
 }
 
