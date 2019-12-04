@@ -5,6 +5,10 @@ function wait (delay) {
 const messages = document.querySelector('.messages');
 const input = document.querySelector('.input');
 
+if(Notification.permission !== 'granted') {
+    Notification.requestPermission();
+}
+
 function onMessage (e) {
     const { data } = e;
     const msgs = JSON.parse(data);
