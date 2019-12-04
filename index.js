@@ -12,6 +12,11 @@ if(Notification.permission !== 'granted') {
 function onMessage (e) {
     const { data } = e;
     const msgs = JSON.parse(data);
+
+    if (Notification.permission === 'granted') {
+        new Notification('New Message');
+    }
+
     const fragment = document.createDocumentFragment();
 
     msgs.forEach(m => {
