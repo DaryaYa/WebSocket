@@ -19,9 +19,17 @@ function onMessage (e) {
 
     const fragment = document.createDocumentFragment();
 
-    msgs.forEach(({ from, message }) => {
+    msgs.forEach(({ from, message, time }) => {
+        //  time = new Date();   
+        //TODO  real time of message convert to normal format
+         const options = {
+            weekday: 'long',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric'
+        };
         const msgElement = document.createElement('div');
-        msgElement.innerHTML = `${from}: ${message}`;
+        msgElement.innerHTML = `${time.toLocaleString("ru", options)} : ${from} -: ${message}`;
         fragment.appendChild(msgElement);
     });
 
@@ -45,7 +53,7 @@ function onOpen () {
         if(!text) {
             return;
         }
-
+        
         const message = {
             from: 'Darya',
             message: text,
